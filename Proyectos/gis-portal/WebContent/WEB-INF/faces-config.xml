@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+
+<faces-config
+	version="2.0"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+
+    
+    <name>gisportal</name>
+
+	<application>
+		<system-event-listener>
+			<system-event-listener-class>co.gov.supernotariado.bachue.portalgeografico.utilities.lifecycle.PostConstructApplicationEventListener</system-event-listener-class>
+			<system-event-class>javax.faces.event.PostConstructApplicationEvent</system-event-class>
+		</system-event-listener>
+	</application>
+
+	<component>
+		<component-type>co.gov.supernotariado.bachue.portalgeografico.component.Map</component-type>
+		<component-class>co.gov.supernotariado.bachue.portalgeografico.component.UIMap</component-class>
+	</component>
+	<component>
+		<component-type>co.gov.supernotariado.bachue.portalgeografico.component.MapService</component-type>
+		<component-class>co.gov.supernotariado.bachue.portalgeografico.component.UIMapService</component-class>
+	</component>
+	<component>
+		<component-type>co.gov.supernotariado.bachue.portalgeografico.component.MapServiceLayer</component-type>
+		<component-class>co.gov.supernotariado.bachue.portalgeografico.component.UIMapServiceLayer</component-class>
+	</component>
+	<component>
+		<component-type>co.gov.supernotariado.bachue.portalgeografico.component.MapSymbol</component-type>
+		<component-class>co.gov.supernotariado.bachue.portalgeografico.component.UIMapSymbol</component-class>
+	</component>
+	<component>
+		<component-type>co.gov.supernotariado.bachue.portalgeografico.component.Svg</component-type>
+		<component-class>co.gov.supernotariado.bachue.portalgeografico.component.UISvg</component-class>
+	</component>
+	<component>
+		<component-type>co.gov.supernotariado.bachue.portalgeografico.component.GeoLocation</component-type>
+		<component-class>co.gov.supernotariado.bachue.portalgeografico.component.UIGeoLocation</component-class>
+	</component>
+
+</faces-config>

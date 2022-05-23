@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<facelet-taglib
+	version="2.0"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facelettaglibrary_2_0.xsd">
+
+	<namespace>http://datatools.gisportal.com</namespace>
+
+	<tag>
+		<description>Map custom component.</description>
+		<tag-name>map</tag-name>
+		<component>
+			<component-type>co.gov.supernotariado.bachue.portalgeografico.component.Map</component-type>
+		</component>
+		<attribute>
+			<description>The identifier for this component.</description>
+			<name>id</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>The rendered indicator for this component.</description>
+			<name>rendered</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>Map background layer. Valid values are "streets", "streets-vector", "streets-navigation-vector", "streets-night-vector", "streets-relief-vector", "satellite", "hybrid", "topo", "topo-vector", "oceans", "gray", "gray-vector", "dark-gray", "dark-gray-vector", "terrain", "national-geographic", and "osm". See the co.gov.supernotariado.bachue.portalgeografico.model.map.Background enum class.</description>
+			<name>background</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Map latitude coordinate. Defaults to "4.828175".</description>
+			<name>latitude</name>
+			<required>false</required>
+			<type>java.lang.Double</type>
+		</attribute>
+		<attribute>
+			<description>Map longitude coordinate. Defaults to "-74.5795".</description>
+			<name>longitude</name>
+			<required>false</required>
+			<type>java.lang.Double</type>
+		</attribute>
+		<attribute>
+			<description>Map zoom level. Most ESRI background layers range from 0 to 16 or 23. Defaults to "3".</description>
+			<name>zoom</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+		</attribute>
+		<attribute>
+			<description>Map zoom factor. The number of levels to zoom in when the popup dialog "Zoom To" link is clicked. This is only applicable for point features since line and polygon features use their bounding extent. Defaults to "4".</description>
+			<name>zoomFactor</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+		</attribute>
+		<attribute>
+			<description>Map maximum levels of detail (LODS). Most ESRI background layers range from 0 to 16 or 23. Lower/higher values restrict/add zoom levels available.</description>
+			<name>lods</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+		</attribute>
+		<attribute>
+			<description>The spatial reference wkid for the map. Defaults to web mercator "102100".</description>
+			<name>wkid</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Slider zoom buttons visibility. Consists of the +/- buttons typically in the upper left hand corner of the map panel. Valid values are "true" and "false". Defaults to "true".</description>
+			<name>showSlider</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>Arrow navigation buttons visibility. Consists of 8 arrow buttons located in the corners and sides of the map used for panning. Valid values are "true" and "false". Defaults to "false".</description>
+			<name>showArrows</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>Popup dialog visibility when the map is clicked. Valid values are "true" and "false". Defaults to "true".</description>
+			<name>showPopup</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>Popup dialog export link visibility. Valid values are "true" and "false". Defaults to "true".</description>
+			<name>showPopupExport</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>Popup dialog action links. Specified as a comma delimited list of strings. An example could be "Select,Edit,Delete" depending on application functionality. Defaults to "Select".</description>
+			<name>popupActions</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Popup dialog width in pixels. Defaults to "400".</description>
+			<name>popupWidth</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+		</attribute>
+		<attribute>
+			<description>Popup dialog maximum height in pixels. Window height will shrink based on data present. Defaults to "200".</description>
+			<name>popupHeight</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+		</attribute>
+		<attribute>
+			<description>Scalebar control visibility. Valid values are "true" and "false". Defaults to "true".</description>
+			<name>showScalebar</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>Logo visibility. Valid values are "true" and "false". Defaults to "false".</description>
+			<name>showLogo</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>Layer attribution text visibility. Valid values are "true" and "false". Defaults to "false".</description>
+			<name>showAttribution</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>Panel for map control.</description>
+			<name>mapPanel</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Panel for legend control.</description>
+			<name>legendPanel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Panel for overview control.</description>
+			<name>overviewPanel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Panel for geocoder control.</description>
+			<name>geocoderPanel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Panel for map and mouse pointer information including latitude/longitude coordinates, map scale, and map zoom level.</description>
+			<name>coordinatesPanel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Panel shown while map is loading or updating.</description>
+			<name>loadingPanel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Panel for map navigation tools.</description>
+			<name>navigationPanel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Panel for map measurement related tools. If specified, the measurement tool will be displayed in the navigation panel. May require proxy support depending on the number of vertices.</description>
+			<name>measurementPanel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Enables all map navigation via mouse and keyboard, with the exception of the slider and pan arrow buttons. Valid values are "true" and "false". Defaults to "true".</description>
+			<name>enableNavigation</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>URL for locally hosted ESRI JSAPI. Defaults to "https://js.arcgis.com/3.27". Do not include the trailing slash.</description>
+			<name>jsapi</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Enables ESRI JSAPI proxy page support required for server-based functionality. The required configuration file com/gisportal/proxy/proxy.xml must be in your application's Java classpath. Valid values are "true" and "false". Defaults to "false".</description>
+			<name>proxyEnabled</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>Force all requests to go through the proxy. This attribute is used only if the proxy is enabled. Valid values are "true" and "false". Defaults to "false".</description>
+			<name>proxyAllRequests</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>Fully qualified URL to a custom proxy to override the proxy contained GISPortal. See "https://github.com/Esri/resource-proxy/releases" for downloads. The proxy contained in GISPortal uses version 1.1.0. Note: if this attribute is used, you are completely responsible for the proxy jsp and the proxy xml configuration file.</description>
+			<name>proxyUrl</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+	</tag>
+
+	<tag>
+		<description>Map service custom component.</description>
+		<tag-name>service</tag-name>
+		<component>
+			<component-type>co.gov.supernotariado.bachue.portalgeografico.component.MapService</component-type>
+		</component>
+		<attribute>
+			<description>The identifier for this component.</description>
+			<name>id</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>The rendered indicator for this component.</description>
+			<name>rendered</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>Map service type. Valid values are "tiled", "image", "dynamic", "kml", "feature", and "graphics".</description>
+			<name>type</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Map service URL. Required for "tiled", "image", "dynamic", "kml", and "feature" services. ESRI layers may be found at http://www.arcgis.com.</description>
+			<name>url</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Map service visibility. Valid values are "true" and "false".</description>
+			<name>visible</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>Map service opacity. Valid values range from 0.0 to 1.0, inclusive. The legend widget honors the service's opacity value.</description>
+			<name>opacity</name>
+			<required>false</required>
+			<type>java.lang.Double</type>
+		</attribute>
+		<attribute>
+			<description>Map service refresh interval in minutes. Defaults to "0".</description>
+			<name>refreshInterval</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+		</attribute>
+		<attribute>
+			<description>Map service minimum visible scale. If the map is zoomed out beyond this scale, the layer will not be visible. Defaults to "0", which means no minimum scale.</description>
+			<name>minScale</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+		</attribute>
+		<attribute>
+			<description>Map service maximum visible scale. If the map is zoomed in beyond this scale, the layer will not be visible. Defaults to "0", which means no maximum scale.</description>
+			<name>maxScale</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+		</attribute>
+		<attribute>
+			<description>Graphics model. Required if the service type is "graphics".</description>
+			<name>model</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Popup dialog visibility when this map service is clicked. Only applicable for service types "dynamic", "feature", and "graphics". Valid values are "true" and "false". Defaults to "true".</description>
+			<name>showPopup</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+	</tag>
+
+	<tag>
+		<description>Map service layer custom component.</description>
+		<tag-name>layer</tag-name>
+		<component>
+			<component-type>co.gov.supernotariado.bachue.portalgeografico.component.MapServiceLayer</component-type>
+		</component>
+		<attribute>
+			<description>The identifier for this component.</description>
+			<name>id</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>The rendered indicator for this component.</description>
+			<name>rendered</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>Layer number as defined in the map service.</description>
+			<name>number</name>
+			<required>true</required>
+			<type>java.lang.Integer</type>
+		</attribute>
+		<attribute>
+			<description>Layer visibility. Valid values are "true" and "false". Defaults to "true".</description>
+			<name>visible</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>Layer filter definition expression. If specified, this layer will be filtered by the features defined by this definition expression. Defaults to all features displayed.</description>
+			<name>where</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Layer extent definition expression. If specified, the map extent will be updated by the features defined by this definition expression. Only a single extent should be specified across all service layers at any given time. As long as this definition expression is specified, the map will automatically zoom during every map refresh. Use the extent ajax event to receive notifications when the map extent changes.</description>
+			<name>extent</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Layer attributes displayed in popup window. Valid values include an "*", "", or a comma delimited, single quoted, list of attribute names or aliases. If empty string specified, the feature will not show up in the identify results at all. Defaults to "*" (all attributes displayed). All attributes are returned to the event handlers.</description>
+			<name>popupAttributes</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+	</tag>
+
+	<tag>
+		<description>Map symbol custom component.</description>
+		<tag-name>symbol</tag-name>
+		<component>
+			<component-type>co.gov.supernotariado.bachue.portalgeografico.component.MapSymbol</component-type>
+		</component>
+		<attribute>
+			<description>The identifier for this component.</description>
+			<name>id</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>The rendered indicator for this component.</description>
+			<name>rendered</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>Map service URL.</description>
+			<name>url</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Map layer number as defined in the map service.</description>
+			<name>layer</name>
+			<required>true</required>
+			<type>java.lang.Integer</type>
+		</attribute>
+		<attribute>
+			<description>Map layer label for the requested symbol as defined by the map service attribute table alias name. Not required if the layer only has a single symbol.</description>
+			<name>label</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Map symbol height in pixels. Defaults to the symbol height specified in the map service.</description>
+			<name>height</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+		</attribute>
+		<attribute>
+			<description>Map symbol width in pixels. Defaults to the symbol width specified in the map service.</description>
+			<name>width</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+		</attribute>
+		<attribute>
+			<description>Map symbol title text. Defaults to the symbol label specified in the map service.</description>
+			<name>title</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Map symbol alternate text. Defaults to the symbol label specified in the map service.</description>
+			<name>alt</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+	</tag>
+
+	<tag>
+		<description>SVG custom component.</description>
+		<tag-name>svg</tag-name>
+		<component>
+			<component-type>co.gov.supernotariado.bachue.portalgeografico.component.Svg</component-type>
+		</component>
+		<attribute>
+			<description>The identifier for this component.</description>
+			<name>id</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>The rendered indicator for this component.</description>
+			<name>rendered</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>Title.</description>
+			<name>title</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Style.</description>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Style class.</description>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Height.</description>
+			<name>height</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Width.</description>
+			<name>width</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>SVG path.</description>
+			<name>path</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>SVG fill color. Defaults to "#FFFFFF".</description>
+			<name>fillColor</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>SVG fill opacity. Valid values range from 0.0 to 1.0, inclusive. Defaults to "1.0".</description>
+			<name>fillOpacity</name>
+			<required>false</required>
+			<type>java.lang.Double</type>
+		</attribute>
+		<attribute>
+			<description>SVG stroke color. Defaults to "#000000".</description>
+			<name>strokeColor</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>SVG stroke opacity. Valid values range from 0.0 to 1.0, inclusive. Defaults to "1.0".</description>
+			<name>strokeOpacity</name>
+			<required>false</required>
+			<type>java.lang.Double</type>
+		</attribute>
+		<attribute>
+			<description>SVG stroke width. Defaults to "1.0".</description>
+			<name>strokeWidth</name>
+			<required>false</required>
+			<type>java.lang.Double</type>
+		</attribute>
+		<attribute>
+			<description>SVG error message if not supported by the browser. Defaults to "SVG not supported.".</description>
+			<name>message</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+	</tag>
+
+	<tag>
+		<description>Geolocation custom component. See https://dev.w3.org/geo/api/spec-source.html for API details.</description>
+		<tag-name>geolocation</tag-name>
+		<component>
+			<component-type>co.gov.supernotariado.bachue.portalgeografico.component.GeoLocation</component-type>
+		</component>
+		<attribute>
+			<description>The identifier for this component.</description>
+			<name>id</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>The rendered indicator for this component.</description>
+			<name>rendered</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>Indicator to receive continuous geolocation events. If "false" a single geolocation event will be received. Valid values are "true" and "false". Defaults to "true".</description>
+			<name>watch</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>Indicator which provides a hint that the application would like to receive the best possible results. Valid values are "true" and "false". Defaults to "true".</description>
+			<name>accuracy</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>Indicates the maximum length of time in milliseconds allowed to pass from the geolocation call until a successful result. Do not set this value too low or timeouts will occur. Defaults to "60000" (60 seconds).</description>
+			<name>timeout</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+		</attribute>
+		<attribute>
+			<description>Indicates the maximum age in milliseconds to accept a cached position. If set to 0, immediately attempt to acquire current position. Defaults to "0"</description>
+			<name>maximumAge</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+		</attribute>
+	</tag>
+
+</facelet-taglib>

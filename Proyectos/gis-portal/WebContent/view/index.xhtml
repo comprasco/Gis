@@ -1,0 +1,467 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:gis="http://datatools.gisportal.com">
+
+
+
+<ui:composition template="/view/template/template.xhtml">
+
+	<ui:define name="title">
+		<h:outputText value="gisportal - SNR - Bachue"></h:outputText>
+	</ui:define>
+
+	<ui:define name="content">
+		<f:loadBundle basename="#{gisProperties.idioma}" var="msg" />
+
+		<p:layout>
+			<div class="loader-page"></div>
+			<p:layoutUnit position="center" header="#{msg.titulo_mapa}"
+				styleClass="center" id="tituloMapa">
+				<h:form id="centerForm" style="height:100%">
+					<h:panelGroup id="mymapdiv" styleClass="gisportalMapPanel"
+						layout="block">
+						<h:panelGroup id="navbar" layout="block"
+							styleClass="gisportalNavbarPanel"></h:panelGroup>
+						<h:panelGroup id="loading" styleClass="gisportalLoadingPanel"
+							layout="block">
+							<h:panelGroup styleClass="fa fa-refresh fa-spin"></h:panelGroup>
+						</h:panelGroup>
+						<h:panelGroup layout="block" style="display: none;"
+							styleClass="gisportalMapAttribute attrVisible">
+							<p:panel header="#{msg.menu4_item2}" toggleable="true"
+								closable="true" collapsed="true" id="pnl"
+								styleClass="attrVisible">
+								<h:panelGroup layout="block">
+									<p:dataTable id="tbl2" var="attribute"
+										value="#{mapBean.dataTable}" resizableColumns="true"
+										selectionMode="multiple" selection="#{mapBean.selectedTable}"
+										rowKey="#{attribute.number}"
+										paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+										paginator="true" rows="10" style="margin-top: 25px;">
+
+										<f:facet name="{Exporters}">
+											<div style="float: left">
+												<h:commandLink id="excel"
+													action="#{customizedDocumentsView.preProcessXLS(mapBean.dataTable)}">
+													<p:graphicImage name="/images/excel_logo.png"
+														styleClass="export" />
+												</h:commandLink>
+												<p:spacer width="10" height="10" />
+												<h:commandLink id="pdf"
+													action="#{customizedDocumentsView.preProcessPDF(mapBean.dataTable)}">
+													<p:graphicImage name="/images/pdf_logo.png"
+														styleClass="export" />
+												</h:commandLink>
+												<p:spacer width="10" height="10" />
+												<h:commandLink id="codes">
+													<p:ajax process="tbl2"
+														listener="#{mapBean.onRowSelectTableA()}"></p:ajax>
+													<p:graphicImage name="/images/colombia-153342_640.png"
+														styleClass="export" />
+												</h:commandLink>
+											</div>
+										</f:facet>
+										<p:column headerText="#{msg.menu4_item3}"
+											sortBy="#{attribute.number}">
+											<h:outputText value="#{attribute.number}" />
+										</p:column>
+
+										<p:column headerText="#{msg.menu4_item4}"
+											sortBy="#{attribute.enrollment}">
+											<h:outputText value="#{attribute.enrollment}" />
+										</p:column>
+
+										<p:column headerText="#{msg.menu4_item5}"
+											sortBy="#{attribute.enrollment}">
+											<h:outputText value="#{attribute.code}" />
+										</p:column>
+
+										<p:column headerText="#{msg.menu4_item6}"
+											sortBy="#{attribute.depto}">
+											<h:outputText value="#{attribute.depto}" />
+										</p:column>
+
+										<p:column headerText="#{msg.menu4_item7}"
+											sortBy="#{attribute.municipality}">
+											<h:outputText value="#{attribute.municipality}" />
+										</p:column>
+
+										<p:column headerText="#{msg.menu4_item8}"
+											sortBy="#{attribute.group}">
+											<h:outputText value="#{attribute.group}" />
+										</p:column>
+
+										<p:column headerText="#{msg.menu4_item9}"
+											sortBy="#{attribute.address}">
+											<h:outputText value="#{attribute.address}" />
+										</p:column>
+
+										<p:column headerText="#{msg.menu4_item10}"
+											sortBy="#{attribute.id}">
+											<h:outputText value="#{attribute.id}" />
+										</p:column>
+
+										<p:column headerText="#{msg.menu4_item11}"
+											sortBy="#{attribute.identification}">
+											<h:outputText value="#{attribute.identification}" />
+										</p:column>
+
+										<p:column headerText="#{msg.menu4_item12}"
+											sortBy="#{attribute.name}">
+											<h:outputText value="#{attribute.name}" />
+										</p:column>
+
+									</p:dataTable>
+								</h:panelGroup>
+							</p:panel>
+							<p:draggable for="pnl" />
+						</h:panelGroup>
+						<h:panelGroup styleClass="gisportalGeocoderPanel" layout="block">
+							<h:panelGroup id="geocoder" layout="block"></h:panelGroup>
+						</h:panelGroup>
+						<h:panelGroup id="coordinates"
+							styleClass="gisportalCoordinatesPanel" layout="block"></h:panelGroup>
+						<h:panelGroup id="overview" layout="block"></h:panelGroup>
+						<h:panelGroup styleClass="gisportalBasemapsPanel" layout="block">
+							<h:panelGroup id="basemapGallery" layout="block"></h:panelGroup>
+						</h:panelGroup>
+					</h:panelGroup>
+					<p:dialog header="#{msg.menu_opcion9}" widgetVar="dlg">
+						<h:form id="dlgForm">
+							<p:tabView id="admonTabs">
+								<p:tab title="#{msg.opcion9_menu5}" id="admonTab1">
+									<h:panelGrid columns="1" cellpadding="10" id="admonGrid">
+										<p:outputLabel for="groupSelection" value="#{msg.menu5_item1}"
+											styleClass="groupSelection" />
+										<p:selectOneMenu id="groupSelection"
+											value="#{mapBean.admonList}" style="width:125px">
+											<f:selectItem itemLabel="Seleccione" itemValue="0" />
+											<f:selectItem itemLabel="Tipo de búsqueda titular"
+												itemValue="1" />
+											<f:selectItem itemLabel="Tipo de identificación"
+												itemValue="2" />
+											<f:selectItem itemLabel="Tipo de búsqueda datos del predio"
+												itemValue="3" />
+											<f:selectItem itemLabel="Tipo de predio" itemValue="4" />
+											<f:selectItem itemLabel="Tipo de consulta masiva"
+												itemValue="5" />
+										</p:selectOneMenu>
+										<p:outputLabel for="inputMod" value="#{msg.menu5_item2}"
+											styleClass="inputMod" />
+										<h:inputText id="inputMod" styleClass="inputMod"
+											value="#{mapBean.inputAdmon}">
+										</h:inputText>
+										<p:selectBooleanCheckbox value="#{mapBean.checkAdmon}"
+											itemLabel="#{msg.menu5_item3}" id="chbMod" />
+										<p:outputLabel for="idSelectionAdmon"
+											value="#{msg.menu5_item4}" />
+										<p:selectOneMenu id="idSelectionAdmon"
+											value="#{mapBean.busqBus}">
+											<f:selectItems value="#{mapBean.busqsBus}" var="busqueda"
+												itemValue="#{busqueda.DESCRIPCION}"
+												itemLabel="#{busqueda.DESCRIPCION}" />
+										</p:selectOneMenu>
+										<p:selectBooleanCheckbox value="#{mapBean.checkAdmonBus}"
+											itemLabel="#{msg.menu5_item5}" id="chbModBus">
+											<f:ajax event="change" render="inputModBus"
+												listener="#{mapBean.AdmdEstInput(mapBean.checkAdmonBus)}" />
+										</p:selectBooleanCheckbox>
+										<h:inputText id="inputModBus" styleClass="inputMod"
+											value="#{mapBean.inputAdmonBus}"
+											disabled="#{mapBean.inputAdmdEst}">
+										</h:inputText>
+										<h:panelGrid columns="4" cellpadding="2">
+											<p:commandButton value="#{msg.menu5_item6}">
+												<f:ajax execute="groupSelection"
+													listener="#{mapBean.admonSearch()}" render="table2" />
+											</p:commandButton>
+											<p:commandButton value="#{msg.menu5_item7}">
+												<f:ajax
+													execute="inputMod chbMod groupSelection chbModBus inputModBus idSelectionAdmon"
+													listener="#{mapBean.admonInsert()}" render="msgDlg table2" />
+											</p:commandButton>
+											<p:commandButton value="#{msg.menu5_item8}"
+												disabled="#{mapBean.btnAdmdEst}"
+												process="inputMod, chbMod, chbModBus, inputModBus, idSelectionAdmon, @this"
+												id="btnAdmdMod" actionListener="#{mapBean.admonModify}"
+												update="table2">
+												<p:confirm header="#{msg.menu5_msg1}"
+													message="#{msg.msg1_item1}" />
+											</p:commandButton>
+											<p:commandButton value="#{msg.menu5_item9}"
+												disabled="#{mapBean.btnAdmdEst}"
+												process="inputMod, chbMod, chbModBus, inputModBus, @this"
+												id="btnAdmdDelet" actionListener="#{mapBean.admonRemove}"
+												update="table2">
+												<p:confirm header="#{msg.menu5_msg2}"
+													message="#{msg.msg2_item2}" />
+											</p:commandButton>
+											<p:confirmDialog global="true" showEffect="fade"
+												hideEffect="fade">
+												<p:commandButton value="#{msg.menu5_msg3}" type="button"
+													styleClass="ui-confirmdialog-yes">
+												</p:commandButton>
+												<p:commandButton value="No" type="button"
+													styleClass="ui-confirmdialog-no" />
+											</p:confirmDialog>
+										</h:panelGrid>
+										<p:growl id="msgDlg" showDetail="true" />
+										<p:dataTable id="table2" var="data2" styleClass="scroll"
+											value="#{mapBean.admonTable}" selectionMode="single"
+											selection="#{mapBean.selectedAdmon}" rowKey="#{data2.no}">
+											<p:ajax event="rowSelect" listener="#{mapBean.onRowSelect}"
+												update="centerForm:dlgForm:admonTabs:chbMod"
+												resetValues="true" />
+											<p:ajax event="rowUnselect"
+												listener="#{mapBean.onRowUnselect}" />
+											<p:column headerText="#{msg.menu5_item10}">
+												<h:outputText value="#{data2.no}" />
+											</p:column>
+											<p:column headerText="#{msg.menu5_item11}">
+												<h:outputText value="#{data2.value}" />
+											</p:column>
+											<p:column headerText="#{msg.menu5_item12}">
+												<h:outputText value="#{data2.state}" />
+											</p:column>
+											<p:column headerText="#{msg.menu5_item13}">
+												<h:outputText value="#{data2.codBus}" />
+											</p:column>
+											<p:column headerText="#{msg.menu5_item14}">
+												<h:outputText value="#{data2.busquedaB}" />
+											</p:column>
+										</p:dataTable>
+									</h:panelGrid>
+								</p:tab>
+								<p:tab title="#{msg.opcion9_menu6}">
+									<h:panelGrid columns="1" cellpadding="10">
+										<p:outputLabel for="inputMod2" value="#{msg.menu6_item1}"
+											styleClass="inputMod2" />
+										<h:inputText id="inputMod2" styleClass="inputMod2"
+											value="#{mapBean.inputAdmon2}" />
+										<p:outputLabel for="inputMod3" value="#{msg.menu6_item2}"
+											styleClass="inputMod3" />
+										<h:inputText id="inputMod3" styleClass="inputMod3"
+											value="#{mapBean.inputAdmon3}" />
+										<p:outputLabel for="inputMod4" value="#{msg.menu6_item3}"
+											styleClass="inputMod4" />
+										<h:inputText id="inputMod4" styleClass="inputMod4"
+											value="#{mapBean.inputAdmon4}" />
+										<p:outputLabel for="inputMod5" value="#{msg.menu6_item4}"
+											styleClass="inputMod5" />
+										<h:inputText id="inputMod5" styleClass="inputMod5"
+											value="#{mapBean.inputAdmon5}" />
+										<p:commandButton value="#{msg.menu6_item5}">
+											<f:ajax execute="inputMod2 inputMod3 inputMod4 inputMod5"
+												listener="#{mapBean.admonModifyR()}" />
+										</p:commandButton>
+									</h:panelGrid>
+								</p:tab>
+							</p:tabView>
+						</h:form>
+					</p:dialog>
+					<p:dialog header="Ajustes Parámetros Mapas"
+						widgetVar="dlgSettingsPrint">
+						<h:form id="frmSettingsPrint">
+							<p:growl id="growl" showDetail="true" />
+							<h:panelGrid columns="1" cellpadding="10">
+
+								<p:outputLabel value="Opciones MAP_ONLY" />
+								<h:panelGrid columns="4">
+									<p:outputLabel value="Ancho" />
+									<p:inputNumber value="#{mapBean.imprimirWidth}"
+										decimalPlaces="0" label="Ancho">
+										<f:convertNumber integerOnly="true" />
+										<f:validateLongRange minimum="1" maximum="1024" />
+									</p:inputNumber>
+									<p:outputLabel value="Largo" />
+									<p:inputNumber value="#{mapBean.imprimirHeight}"
+										decimalPlaces="0" label="Largo">
+										<f:convertNumber integerOnly="true" />
+										<f:validateLongRange minimum="1" maximum="768" />
+									</p:inputNumber>
+								</h:panelGrid>
+
+								<p:outputLabel
+									value="Opciones de calidad de impresión (De 100 a 300)" />
+								<h:panelGrid columns="2">
+									<p:outputLabel value="DPI" />
+									<p:inputNumber value="#{mapBean.imprimirDPI}" decimalPlaces="0"
+										label="DPI">
+										<f:convertNumber integerOnly="true" />
+										<f:validateLongRange minimum="1" maximum="300" />
+									</p:inputNumber>
+								</h:panelGrid>
+
+								<p:outputLabel for="scalebarUnit"
+									value="Unidades barra de escala:" />
+								<p:selectOneMenu id="scalebarUnit"
+									value="#{mapBean.imprimirScalebarUnit}" style="width:125px">
+									<f:selectItem itemLabel="Kilometros" itemValue="Kilometers" />
+									<f:selectItem itemLabel="Millas" itemValue="Miles" />
+									<f:selectItem itemLabel="Metros" itemValue="Meters" />
+									<f:selectItem itemLabel="Pies" itemValue="Feet" />
+								</p:selectOneMenu>
+								<p:selectBooleanCheckbox value="#{mapBean.imprimirLegend}"
+									itemLabel="Incluir convenciones mapa">
+								</p:selectBooleanCheckbox>
+
+								<p:commandButton value="Aceptar"
+									process="@this,frmSettingsPrint" update="growl"
+									oncomplete="handleCloseDlgSettingsPrint(xhr, status, args);" />
+							</h:panelGrid>
+
+						</h:form>
+					</p:dialog>
+					<p:dialog header="#{msg.menu_opcion10}" widgetVar="dlg2" id="dlg2">
+						<h:form id="dlgDatosPredio">
+							<h:panelGrid columns="2" cellpadding="5">
+								<h:outputLabel value="#{msg.opcion12_item4}" />
+								<h:outputLabel id="depto1" value="#{mapBean.territorioD}" />
+								<h:outputLabel value="#{msg.opcion12_item5}" />
+								<h:outputLabel id="mun1" value="#{mapBean.territorioM}" />
+							</h:panelGrid>
+							<p:selectOneMenu id="idSelectionDatosP" value="#{mapBean.folioM}"
+								dynamic="true" style="width:125px">
+								<f:selectItem itemLabel="Seleccione" itemValue="" />
+								<f:selectItems value="#{mapBean.fMatriculas}" />
+								<p:ajax event="change"
+									listener="#{mapBean.idSelectionDatosP(mapBean.folioM)}"
+									update="table3 centerForm:dlgDatosPredio:depto1 centerForm:dlgDatosJuridico:depto2 centerForm:dlgAnotaciones:depto3 centerForm:dlgDatosPredio:mun1 centerForm:dlgDatosJuridico:mun2 centerForm:dlgAnotaciones:mun3" />
+							</p:selectOneMenu>
+							<p:dataTable id="table3" var="data3" styleClass="scroll"
+								value="#{mapBean.datosPredio}" paginator="true" rows="5"
+								paginatorposition="bottom" lazy="true" dynamic="true"
+								selectionMode="single" resizableColumns="true"
+								selection="#{mapBean.selectedPredio}"
+								rowKey="#{data3.identificacion}">
+								<p:ajax event="rowSelect"
+									listener="#{mapBean.onRowSelectPredio}"
+									update="centerForm:dlgDatosJuridico:table4" />
+
+								<p:column headerText="#{msg.opcion10_item1}">
+									<h:outputText value="#{data3.identificacion}" />
+								</p:column>
+								<p:column headerText="#{msg.opcion10_item2}">
+									<h:outputText value="#{data3.nombreTitular}" />
+								</p:column>
+								<p:column headerText="#{msg.opcion10_item3}">
+									<h:outputText value="#{data3.direccion}" />
+								</p:column>
+								<p:column headerText="#{msg.opcion10_item4}">
+									<h:outputText value="#{data3.participacion}" />
+								</p:column>
+							</p:dataTable>
+						</h:form>
+					</p:dialog>
+					<p:dialog header="#{msg.menu_opcion11}" widgetVar="dlg3">
+						<h:form id="dlgDatosJuridico">
+							<h:panelGrid columns="2" cellpadding="5">
+								<h:outputLabel value="#{msg.opcion12_item4}" />
+								<h:outputLabel id="depto2" value="#{mapBean.territorioD}" />
+								<h:outputLabel value="#{msg.opcion12_item5}" />
+								<h:outputLabel id="mun2" value="#{mapBean.territorioM}" />
+							</h:panelGrid>
+							<p:dataTable id="table4" var="data4" styleClass="scroll"
+								value="#{mapBean.datosJuridico}" paginator="true" rows="5"
+								paginatorposition="bottom" lazy="true" dynamic="true"
+								selectionMode="single" resizableColumns="true"
+								selection="#{mapBean.selectedJuridico}"
+								rowKey="#{data4.consecutivo}">
+								<p:ajax event="rowSelect"
+									listener="#{mapBean.onRowSelectJuridico}"
+									update="centerForm:dlgAnotaciones:table5" />
+
+								<p:column headerText="#{msg.opcion11_item1}">
+									<h:outputText value="#{data4.consecutivo}" />
+								</p:column>
+								<p:column headerText="#{msg.opcion11_item2}">
+									<h:outputText value="#{data4.datosDocumento}" />
+								</p:column>
+								<p:column headerText="#{msg.opcion11_item3}">
+									<h:outputText value="#{data4.actoJuridico}" />
+								</p:column>
+								<p:column headerText="#{msg.opcion11_item4}">
+									<h:outputText value="#{data4.dRR}" />
+								</p:column>
+								<p:column headerText="#{msg.opcion11_item5}">
+									<h:outputText value="#{data4.valor}" />
+								</p:column>
+								<p:column headerText="#{msg.opcion11_item6}">
+									<h:outputText value="#{data4.fechaAnotacion}" />
+								</p:column>
+							</p:dataTable>
+						</h:form>
+					</p:dialog>
+					<p:dialog header="#{msg.menu_opcion12}" widgetVar="dlg4" id="dlg4">
+						<h:form id="dlgAnotaciones">
+							<h:panelGrid columns="2" cellpadding="5">
+								<h:outputLabel value="#{msg.opcion12_item4}" />
+								<p:outputLabel id="depto3" value="#{mapBean.territorioD}" />
+								<h:outputLabel value="#{msg.opcion12_item5}" />
+								<p:outputLabel id="mun3" value="#{mapBean.territorioM}" />
+							</h:panelGrid>
+							<p:dataTable id="table5" var="data5" styleClass="scroll"
+								value="#{mapBean.datosAnotaciones}" paginator="true" rows="5"
+								paginatorposition="bottom" lazy="true" dynamic="true">
+
+								<p:column headerText="#{msg.opcion12_item1}">
+									<h:outputText value="#{data5.identificacion}" />
+								</p:column>
+								<p:column headerText="#{msg.opcion12_item2}">
+									<h:outputText value="#{data5.nombInterviniente}" />
+								</p:column>
+								<p:column headerText="#{msg.opcion12_item3}">
+									<h:outputText value="#{data5.rol}" />
+								</p:column>
+							</p:dataTable>
+						</h:form>
+					</p:dialog>
+				</h:form>
+			</p:layoutUnit>
+
+		</p:layout>
+
+		<h:form id="mapForm">
+			<p:growl id="growl1" showSummary="true" showDetail="true"></p:growl>
+			<gis:map id="mymap" mapPanel=":centerForm:mymapdiv"
+				overviewPanel=":centerForm:overview"
+				measurementPanel=":westForm:measurementPanel"
+				loadPanel=":westForm:load" geocoderPanel=":centerForm:geocoder"
+				legendPanel=":westForm:legend" markerPanel=":westForm:marker"
+				coordinatesPanel=":centerForm:coordinates"
+				loadingPanel=":centerForm:loading"
+				navigationPanel=":centerForm:navbar"
+				background="#{mapBean.background}" latitude="#{mapBean.latitude}"
+				longitude="#{mapBean.longitude}" zoom="#{mapBean.zoom}">
+				<gis:service type="dynamic" url="#{mapBean.urlService}"
+					opacity="#{mapBean.opacity}">
+					<gis:layer number="1" visible="#{mapBean.layers[0]}"></gis:layer>
+					<gis:layer number="2" visible="#{mapBean.layers[1]}"></gis:layer>
+					<gis:layer number="3" visible="#{mapBean.layers[2]}"></gis:layer>
+					<gis:layer number="4" visible="#{mapBean.layers[3]}"></gis:layer>
+					<gis:layer number="6" visible="#{mapBean.layers[4]}"></gis:layer>
+					<gis:layer number="7" visible="#{mapBean.layers[5]}"></gis:layer>
+					<gis:layer number="8" visible="#{mapBean.layers[6]}"></gis:layer>
+				</gis:service>
+				<gis:service type="dynamic" url="#{mapBean.urlService2}"
+					opacity="#{mapBean.opacity2}">
+					<gis:layer number="1" visible="#{mapBean.layers2[0]}"></gis:layer>
+					<gis:layer number="2" visible="#{mapBean.layers2[1]}"></gis:layer>
+					<gis:layer number="3" visible="#{mapBean.layers2[2]}"></gis:layer>
+					<gis:layer number="4" visible="#{mapBean.layers2[3]}"></gis:layer>
+					<gis:layer number="6" visible="#{mapBean.layers2[4]}"></gis:layer>
+					<gis:layer number="7" visible="#{mapBean.layers2[5]}"></gis:layer>
+					<gis:layer number="8" visible="#{mapBean.layers2[6]}"></gis:layer>
+				</gis:service>
+				<f:ajax event="geolocation"
+					listener="#{mapBean.doMapGeoLocationListener}" render="growl1"></f:ajax>
+			</gis:map>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,681 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<script
+		src="https://unpkg.com/reconnecting-websocket@4.2.0/dist/reconnecting-websocket-iife.js"></script>
+
+	<!-- Load the main Terraformer library -->
+	<script src="https://unpkg.com/terraformer/terraformer.js"
+		type="text/javascript"></script>
+	<!-- Load the ArcGIS Parser -->
+	<script
+		src="https://unpkg.com/terraformer-arcgis-parser/terraformer-arcgis-parser.js"
+		type="text/javascript"></script>
+
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.6.0/proj4.js"
+		type="text/javascript"></script>
+</h:head>
+
+<h:body>
+	<div class="loader-page"></div>
+	<f:loadBundle basename="#{gisProperties.idioma}" var="msg" />
+	<h:form id="westForm" enctype="multipart/form-data">
+		<p:panel header="#{msg.menu_opcion1}" toggleable="true"
+			collapsed="true" id="capas">
+			<h:panelGrid columns="2" id="panelGServices"
+				styleClass="panelGServicesclass">
+				<p:tree value="#{mapBean.treeNodeServices}" var="lyr"
+					selectionMode="checkbox" selection="#{mapBean.selectedNode}">
+					<p:ajax event="select" update=":mapForm:mymap"
+						listener="#{mapBean.displaySelectedMultiple(mapBean.selectedNode)}" />
+					<p:ajax event="unselect" update=":mapForm:mymap"
+						listener="#{mapBean.displaySelectedMultiple(mapBean.selectedNode)}" />
+					<p:treeNode>
+						<h:outputText value="#{lyr.name}" />
+					</p:treeNode>
+				</p:tree>
+				<p:tieredMenu autoDisplay="true" id="tieredMenu1"
+					styleClass="menuLayer">
+					<p:submenu label="" icon="pi pi-refresh" style="margin-right: 10px"
+						styleClass="menuLayer">
+						<p:menuitem value="#{msg.opcion1_item1}" icon="pi pi-save"
+							onclick="menuItemMU1();" disabled="#{mapBean.moveUpM1}" />
+						<p:menuitem value="#{msg.opcion1_item2}" icon="pi pi-refresh"
+							disabled="#{mapBean.moveDownM1}" onclick="menuItemMD1();">
+						</p:menuitem>
+						<p:menuitem value="#{mapBean.layerVisualize}"
+							onclick="menuItemMV1();" icon="pi pi-refresh" />
+						<p:menuitem value="#{msg.opcion1_item5}"
+							action="#{mapBean.setZoom(4)}" update=":mapForm:mymap"
+							icon="pi pi-refresh" />
+						<p:submenu label="#{msg.opcion1_item6}" icon="pi pi-refresh">
+							<p:menuitem>
+								<h:panelGrid columns="1" style="margin-right: 10px">
+									<h:outputText id="output"
+										value="Opacidad #{mapBean.opacityCal}%" />
+									<p:slider for="opacity" display="output" minValue="0"
+										maxValue="100" step="1" displayTemplate="Opacidad {value}%">
+										<p:ajax event="slideEnd" process="opacity"
+											update=":mapForm:mymap"></p:ajax>
+									</p:slider>
+									<h:inputHidden id="opacity" value="#{mapBean.opacityCal}" />
+								</h:panelGrid>
+							</p:menuitem>
+						</p:submenu>
+					</p:submenu>
+				</p:tieredMenu>
+			</h:panelGrid>
+			<!-- <h:panelGrid columns="2" id="panelGServices2"
+				styleClass="panelGServices2class">
+				<p:tree value="#{mapBean.treeNodeServices2}" var="lyr2"
+					selectionMode="checkbox" selection="#{mapBean.selectedNode2}">
+					<p:ajax event="select" update=":mapForm:mymap"
+						listener="#{mapBean.displaySelectedMultiple2(mapBean.selectedNode2)}" />
+					<p:ajax event="unselect" update=":mapForm:mymap"
+						listener="#{mapBean.displaySelectedMultiple2(mapBean.selectedNode2)}" />
+					<p:treeNode>
+						<h:outputText value="#{lyr2.name}" />
+					</p:treeNode>
+				</p:tree>
+				<p:tieredMenu autoDisplay="true" id="tieredMenu2"
+					styleClass="menuLayer">
+					<p:submenu label="" icon="pi pi-refresh" style="margin-right: 10px"
+						styleClass="menuLayer">
+						<p:menuitem value="Mover arriba" icon="pi pi-refresh"
+							onclick="menuItemMU2();" disabled="#{mapBean.moveUpM2}">
+						</p:menuitem>
+						<p:menuitem value="Mover abajo" icon="pi pi-save"
+							disabled="#{mapBean.moveDownM2}" onclick="menuItemMD2();" />
+						<p:menuitem value="#{mapBean.layerVisualize2}"
+							icon="pi pi-refresh" onclick="menuItemMV2();" />
+						<p:menuitem value="Ampliar capa" action="#{mapBean.setZoom(4)}"
+							update=":mapForm:mymap" icon="pi pi-refresh" />
+						<p:submenu label="Transparencia" icon="pi pi-refresh">
+							<p:menuitem>
+								<h:panelGrid columns="1" style="margin-right: 10px">
+									<h:outputText id="output2"
+										value="Opacidad #{mapBean.opacityCal2}%" />
+									<p:slider for="opacity2" display="output2" minValue="0"
+										maxValue="100" step="1" displayTemplate="Opacidad {value}%">
+										<p:ajax event="slideEnd" process="opacity2"
+											update=":mapForm:mymap"></p:ajax>
+									</p:slider>
+									<h:inputHidden id="opacity2" value="#{mapBean.opacityCal2}" />
+								</h:panelGrid>
+							</p:menuitem>
+						</p:submenu>
+					</p:submenu>
+				</p:tieredMenu>
+			</h:panelGrid>-->
+		</p:panel>
+		<p:panel header="#{msg.menu_opcion2}" toggleable="true"
+			collapsed="true" id="conventions">
+			<h:panelGroup styleClass="gisportalLegendPanel" layout="block">
+				<h:panelGroup id="legend" layout="block"></h:panelGroup>
+			</h:panelGroup>
+		</p:panel>
+		<p:panel header="#{msg.menu_opcion3}" toggleable="true"
+			collapsed="true" id="markers">
+			<p:panelGrid columns="1" layout="grid" styleClass="markersGrid">
+				<h:panelGroup id="marker" layout="block"></h:panelGroup>
+			</p:panelGrid>
+		</p:panel>
+		<p:panel header="#{msg.menu_opcion4}" toggleable="true"
+			collapsed="true">
+			<h:panelGroup layout="block">
+				<h4>
+					<p:outputLabel value="#{msg.opcion4_item1}" />
+				</h4>
+				<h:panelGroup id="identify" layout="block">
+					<select id="idSelection">
+						<option>Todas las capas visibles</option>
+					</select>
+				</h:panelGroup>
+			</h:panelGroup>
+		</p:panel>
+		<p:panel header="#{msg.menu_opcion5}" toggleable="true"
+			collapsed="true">
+			<p:panel header="#{msg.opcion5_menu1}" toggleable="true"
+				collapsed="true">
+				<h:panelGroup layout="block">
+					<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+						<p:selectOneRadio id="radioBtn" value="#{mapBean.radioBtn}"
+							unselectable="true">
+							<f:selectItem itemLabel="#{msg.menu1_item1}"
+								itemValue="Datos del titular" />
+							<f:selectItem itemLabel="#{msg.menu1_item2}"
+								itemValue="Datos del predio" />
+							<p:ajax event="change"
+								listener="#{mapBean.radioBtn(mapBean.radioBtn)}"
+								update="idSelection2" resetValues="true" />
+						</p:selectOneRadio>
+					</h:panelGrid>
+					<h:panelGrid columns="1" style="margin-bottom:10px" cellpadding="5">
+						<p:outputLabel for="idSelection2" value="#{msg.menu1_item3}"
+							styleClass="idSelection2" style="display: none;" />
+						<p:selectOneMenu id="idSelection2" value="#{mapBean.search}"
+							styleClass="idSelection2" style="display: none;">
+							<f:selectItem itemLabel="Seleccione" itemValue="" />
+							<f:selectItems value="#{mapBean.searchs}" />
+							<p:ajax event="change"
+								listener="#{mapBean.idSelection2(mapBean.search, mapBean.radioBtn)}"
+								update="idSelection3 idSelection4" />
+						</p:selectOneMenu>
+						<p:outputLabel for="idSelection3" value="#{msg.menu1_item4}"
+							styleClass="idSelection3 idSelection0" style="display: none;" />
+						<p:selectOneMenu id="idSelection3" value="#{mapBean.search2}"
+							styleClass="idSelection3 idSelection0" style="display: none;"
+							onchange="queryOption(this)">
+							<f:selectItems value="#{mapBean.searchs2}" />
+						</p:selectOneMenu>
+						<p:outputLabel for="inputTextConsulta2" value="#{msg.menu1_item8}"
+							styleClass=" idSelection0 idSelectionC" style="display: none;" />
+						<h:inputText id="inputTextConsulta2"
+							styleClass=" idSelection0 idSelectionC"
+							value="#{mapBean.queryValMin}" style="display: none;"></h:inputText>
+						<p:outputLabel for="inputTextConsulta3" value="#{msg.menu1_item9}"
+							styleClass=" idSelection0 idSelectionC" style="display: none;" />
+						<h:inputText id="inputTextConsulta3"
+							styleClass=" idSelection0 idSelectionC"
+							value="#{mapBean.queryValMax}" style="display: none;"></h:inputText>
+						<p:outputLabel for="idSelection4" value="#{msg.menu1_item10}"
+							styleClass=" idSelection0 idSelectionC idSelectionD"
+							style="display: none;" />
+						<p:selectOneMenu id="idSelection4" value="#{mapBean.dpto}"
+							style="display: none;"
+							styleClass="idSelection0 idSelectionC idSelectionD">
+							<f:selectItem itemLabel="Seleccione" itemValue=""
+								noSelectionOption="true" />
+							<f:selectItems value="#{mapBean.dptos}" var="departamento"
+								itemValue="#{departamento.ID_DEPARTAMENTO}"
+								itemLabel="#{departamento.NOMBRE}" />
+							<p:ajax event="change"
+								listener="#{mapBean.selectMunicipios(mapBean.dpto)}" />
+						</p:selectOneMenu>
+						<p:outputLabel for="idSelection5" value="#{msg.menu1_item11}"
+							styleClass="idSelectionC idSelection0 idSelectionD"
+							style="display: none;" />
+						<p:selectOneMenu id="idSelection5" value="#{mapBean.mpio}"
+							style="display: none;"
+							styleClass="idSelectionC idSelection0 idSelectionD">
+							<f:selectItem itemLabel="Seleccione" itemValue=""
+								noSelectionOption="true" />
+							<f:selectItems value="#{mapBean.mpios}" var="municipio"
+								itemValue="#{municipio.NUM_DANE}" itemLabel="#{municipio.DANE}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel for="inputTextConsulta" value="#{msg.menu1_item7}"
+							style="display: none;" styleClass=" idSelection0 idSelectionA" />
+						<p:outputLabel for="inputTextConsulta" value="#{msg.menu1_item5}"
+							style="display: none;" styleClass=" idSelection0 idSelectionB" />
+						<h:panelGroup layout="block">
+							<h:inputText id="inputTextConsulta" value="#{mapBean.queryVal}"
+								styleClass=" idSelection0 idSelectionA idSelectionB"
+								style="display: none;"></h:inputText>
+						</h:panelGroup>
+						<p:outputLabel for="inputTextConsulta4" value="#{msg.menu1_item6}"
+							style="display: none;" styleClass=" idSelection0 idSelectionB" />
+						<h:panelGroup layout="block">
+							<h:inputText id="inputTextConsulta4" value="#{mapBean.queryVal2}"
+								styleClass=" idSelection0 idSelectionB" style="display: none;"></h:inputText>
+						</h:panelGroup>
+					</h:panelGrid>
+					<h:panelGrid columns="3" style="margin-bottom:10px" cellpadding="5">
+						<h:commandButton value="#{msg.menu1_item12}"
+							styleClass="boton_personalizado idSelection0 idSelectionBtO"
+							style="display: none;">
+							<f:ajax
+								execute="idSelection2 idSelection3  inputTextConsulta inputTextConsulta4"
+								listener="#{mapBean.searchOwner()}"
+								render="table :centerForm:tbl2" />
+						</h:commandButton>
+						<h:commandButton value="#{msg.menu1_item12}"
+							styleClass="boton_personalizado idSelection0 idSelectionBtP"
+							style="display: none;">
+							<f:ajax
+								execute="idSelection2 idSelection3 idSelection4 idSelection5 inputTextConsulta inputTextConsulta2 inputTextConsulta3"
+								listener="#{mapBean.searchProperty()}"
+								render="table :centerForm:tbl2" />
+						</h:commandButton>
+						<input type="button" value="#{msg.menu1_item13}"
+							onclick="cleanTxt();clearGraphics();"
+							class="boton_personalizado idSelection0 idSelectionA idSelectionB idSelectionC idSelectionD"
+							style="display: none;" />
+					</h:panelGrid>
+					<p:dataTable var="data" value="#{mapBean.dataTable}" id="table"
+						style="display: none;" styleClass="table idSelection0"
+						paginator="true" rows="20" paginatorposition="bottom" lazy="true"
+						dynamic="true" selectionMode="single" resizableColumns="true"
+						selection="#{mapBean.selectedConsult}" rowKey="#{data.number}">
+						<p:ajax event="rowSelect" listener="#{mapBean.onRowSelectConsult}" />
+
+						<p:column headerText="#{msg.menu1_item14}" width="7%">
+							<h:outputText value="#{data.number}" />
+						</p:column>
+
+						<p:column headerText="#{msg.menu1_item15}">
+							<h:outputText value="#{data.enrollment}" />
+						</p:column>
+
+						<p:column headerText="#{msg.menu1_item16}">
+							<h:outputText value="#{data.code}" />
+						</p:column>
+
+					</p:dataTable>
+				</h:panelGroup>
+			</p:panel>
+			<p:panel header="#{msg.opcion5_menu2}" toggleable="true"
+				collapsed="true">
+				<h:panelGroup layout="block">
+					<h4>
+						<p:outputLabel for="idSelection6" value="#{msg.menu2_item1}"
+							styleClass="idSelection6" />
+					</h4>
+					<p:selectOneMenu id="idSelection6"
+						value="#{fileUploadView.massiveConsul}" style="width:125px;">
+						<f:selectItems value="#{fileUploadView.massiveConsuls}"
+							var="ConsulMax" itemValue="#{ConsulMax.VALOR}"
+							itemLabel="#{ConsulMax.VALOR}" />
+						<f:ajax execute="idSelection6" />
+					</p:selectOneMenu>
+					<br />
+					<br />
+					<p:fieldset legend="#{msg.menu2_item2}" style="margin-bottom:20px">
+						<p:fileUpload id="fileUpload"
+							fileUploadListener="#{fileUploadView.handleFileUpload}"
+							mode="advanced" dragDropSupport="false"
+							cancelLabel="#{msg.opcion8_item12}"
+							uploadLabel="#{msg.opcion8_item9}" label="#{msg.opcion8_item11}"
+							update="messages :centerForm:tbl2" process="idSelection6"
+							fileLimit="1" allowTypes="/(\.|\/)(txt)$/" sizeLimit="25000" />
+						<p:growl id="messages" showDetail="true" />
+						<br />
+						<h:commandButton value="#{msg.menu3_item3}" styleClass="CleanFUp"
+							onclick="clearGraphics();">
+							<p:ajax update="fileUpload" resetValues="true" />
+						</h:commandButton>
+					</p:fieldset>
+				</h:panelGroup>
+			</p:panel>
+			<p:panel header="#{msg.opcion5_menu3}" toggleable="true"
+				collapsed="true">
+				<p:selectOneRadio id="radioBtn3"
+					value="#{mapBean.tipoConsultaLocalizacion}" styleClass="radioBtn2"
+					layout="custom">
+					<f:selectItem itemValue="CAPA" />
+					<f:selectItem itemValue="DIBUJO" />
+				</p:selectOneRadio>
+
+				<h:panelGrid id="pnlConsultaLocalizacion" columns="2"
+					cellpadding="5">
+					<p:radioButton for="radioBtn3" itemIndex="0" />
+					<p:selectOneMenu id="cmbCapasLocales"
+						value="#{mapBean.capasLocalesSelected}"
+						disabled="#{mapBean.tipoConsultaLocalizacion eq 'DIBUJO'}">
+						<f:selectItem itemLabel="Lista de Capas Locales"
+							noSelectionOption="" />
+						<f:selectItems value="#{mapBean.capasLocalesItems}" />
+					</p:selectOneMenu>
+
+					<p:radioButton for="radioBtn3" itemIndex="1" />
+					<h:panelGroup layout="block">
+						<h:panelGrid columns="1" style="margin-bottom:10px"
+							cellpadding="5">
+							<input type="button" title="Circulo"
+								onclick="activeDraw('circle', 'Circulo',true);"
+								class="drawButton drawCirle" />
+							<input type="button" title="Polilínea"
+								onclick="activeDraw('polyline','Polilínea',true);"
+								class="drawButton drawLine" />
+							<input type="button" title="Polilínea a Mano Alzada"
+								class="drawButton drawFreehand"
+								onclick="activeDraw('freehandpolyline','Polilínea a Mano Alzada',true);" />
+							<input type="button" title="Poligono"
+								class="drawButton drawPolygon"
+								onclick="activeDraw('polygon','Poligono',true);" />
+							<input type="button" title="Poligono a Mano Alzada"
+								class="drawButton drawPolygonFreehand"
+								onclick="activeDraw('freehandpolygon','Poligono a Mano Alzada',true);" />
+						</h:panelGrid>
+					</h:panelGroup>
+				</h:panelGrid>
+				<h:panelGrid columns="2">
+					<p:commandButton value="#{msg.menu3_item1}"
+						process="@this,pnlConsultaLocalizacion"
+						action="#{mapBean.consultarCapasLocales}" update="messages2"
+						disabled="#{mapBean.tipoConsultaLocalizacion eq 'DIBUJO'}" />
+					<input type="button" value="#{msg.menu3_item2}" onclick="clean();" />
+				</h:panelGrid>
+			</p:panel>
+			<p:panel header="#{msg.opcion5_menu4}" toggleable="true"
+				collapsed="true" styleClass="tableAttribute">
+				<p:outputLabel value="#{msg.menu4_item1}" />
+			</p:panel>
+		</p:panel>
+		<p:panel header="#{msg.menu_opcion6}" toggleable="true"
+			collapsed="true">
+			<h:panelGroup id="draw" layout="block">
+				<h:panelGroup layout="block">
+					<input type="button" title="Punto"
+						onclick="desactiveText();activeDraw('point','Punto');"
+						class="drawButton drawPoint" />
+					<input type="button" title="Circulo"
+						onclick="activeDraw('circle', 'Circulo');"
+						class="drawButton drawCirle" />
+					<input type="button" title="Polilínea"
+						onclick="activeDraw('polyline','Polilínea');"
+						class="drawButton drawLine" />
+					<input type="button" title="Polilínea a Mano Alzada"
+						class="drawButton drawFreehand"
+						onclick="activeDraw('freehandpolyline','Polilínea a Mano Alzada');" />
+					<input type="button" title="Poligono"
+						class="drawButton drawPolygon"
+						onclick="activeDraw('polygon','Poligono');" />
+					<input type="button" title="Poligono a Mano Alzada"
+						class="drawButton drawPolygonFreehand"
+						onclick="activeDraw('freehandpolygon','Poligono a Mano Alzada');" />
+					<input type="button" id="texto" title="Crear Texto"
+						class="drawButton drawText" onclick="createText();" />
+					<input type="button" title="Borrar" onclick="clean();"
+						class="drawButton drawClear" />
+				</h:panelGroup>
+				<br />
+				<br />
+				<p:outputLabel value="" styleClass="modoDibujo"
+					style="display: none; font-weight: bold;" />
+			</h:panelGroup>
+		</p:panel>
+		<p:panel header="#{msg.menu_opcion7}" toggleable="true"
+			collapsed="true" id="measurement" styleClass="gisportalmeasurement">
+			<h:panelGroup layout="block">
+				<h:panelGroup id="measurementPanel" layout="block"></h:panelGroup>
+			</h:panelGroup>
+		</p:panel>
+		<p:panel header="#{msg.menu_opcion8}" toggleable="true"
+			collapsed="true">
+
+			<h:panelGrid id="pnlCargarExportar" width="100%">
+				<h:panelGroup layout="block">
+					<h4>
+						<p:outputLabel value="#{msg.opcion8_item1}" />
+					</h4>
+					<h:panelGroup id="identify7" layout="block">
+						<p:selectOneMenu value="#{fileUploadView.cargarExportar}">
+							<p:ajax update="westForm:pnlCargarExportar"
+								oncomplete="sortFileUpload();" />
+							<f:selectItem itemLabel="#{msg.opcion8_item10}"
+								itemValue="EXPORTAR" />
+							<f:selectItem itemLabel="#{msg.opcion8_item9}" itemValue="CARGAR" />
+							<f:selectItem itemLabel="#{msg.opcion8_item20}"
+								itemValue="CARGAR_OGC" />
+						</p:selectOneMenu>
+					</h:panelGroup>
+				</h:panelGroup>
+
+				<h:panelGrid width="100%"
+					rendered="#{fileUploadView.cargarExportar eq 'CARGAR'}">
+
+					<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+						<p:selectOneRadio id="radioBtn2"
+							value="#{fileUploadView.cargarValor}" unselectable="true"
+							styleClass="radioBtn2">
+							<p:ajax update="westForm:pnlCargarExportar" />
+							<f:selectItem itemLabel="#{msg.opcion8_item6}" itemValue="LOCAL" />
+							<f:selectItem itemLabel="#{msg.opcion8_item7}" itemValue="CSV" />
+						</p:selectOneRadio>
+					</h:panelGrid>
+					<p:fieldset legend="#{msg.opcion8_item4}"
+						style="margin-bottom:10px" styleClass="fileUpload2">
+						<p:fileUpload id="fileUpload2" multiple="false"
+							fileUploadListener="#{fileUploadView.handleFileUpload2}"
+							mode="advanced" dragDropSupport="false" update="messages2"
+							cancelLabel="#{msg.opcion8_item12}"
+							uploadLabel="#{msg.opcion8_item9}" label="#{msg.opcion8_item11}"
+							process="radioBtn2" fileLimit="99"
+							allowTypes="/(\.|\/)(csv|zip)$/" widgetVar="upload2" />
+						<p:growl id="messages2" showDetail="true" />
+						<span class="file-upload-status" style="opacity: 1;"
+							id="upload-status"></span>
+						<br />
+						<h:commandButton value="#{msg.opcion8_item5}"
+							styleClass="CleanFUp">
+							<p:ajax update="fileUpload2" resetValues="true"
+								oncomplete="clearCSVPoints();" />
+						</h:commandButton>
+					</p:fieldset>
+				</h:panelGrid>
+
+				<h:panelGrid width="100%" id="pnlServiciosOGC"
+					rendered="#{fileUploadView.cargarExportar eq 'CARGAR_OGC'}">
+
+					<h:outputLabel value="#{msg.opcion8_item21}" />
+					<p:selectOneMenu value="#{mapBean.servicioTipo}">
+						<p:ajax event="change"
+							listener="#{mapBean.tipoOGCSelectionChange}"
+							update="cmbCapasOGC txtOGCUrl" />
+						<f:selectItem itemLabel="#{msg.opcion8_item23} WFS"
+							itemValue="WFS" />
+						<f:selectItem itemLabel="#{msg.opcion8_item23} WMS"
+							itemValue="WMS" />
+						<f:selectItem itemLabel="#{msg.opcion8_item23} WCS"
+							itemValue="WCS" />
+					</p:selectOneMenu>
+
+					<h:outputLabel value="#{msg.opcion8_item22}" />
+					<h:inputText id="txtOGCUrl" style="width:100%"
+						value="#{mapBean.servicioURL}" />
+
+					<h:outputLabel value="#{msg.opcion8_item24}" />
+					<p:selectOneMenu id="cmbCapasOGC" autoWidth="false"
+						value="#{mapBean.capasOGCSelected}" style="width:125px;">
+						<p:ajax event="change"
+							listener="#{mapBean.capasOGCSelectionChange}"
+							update="cmbCapasOGC" />
+						<f:selectItem itemLabel="#{msg.opcion8_item1}"
+							noSelectionOption="" />
+						<f:selectItems value="#{mapBean.capasOGCItems}" />
+					</p:selectOneMenu>
+
+					<span class="file-upload-status"
+						style="opacity: 1; font-weight: bold;" id="msgServiciosOGC"></span>
+
+					<div id="layerList"></div>
+
+					<br />
+
+				</h:panelGrid>
+
+				<h:panelGrid id="pnlServiciosOGCButtons" columns="2"
+					rendered="#{fileUploadView.cargarExportar eq 'CARGAR_OGC'}"
+					style="margin-bottom:10px" cellpadding="5">
+					<p:commandButton value="#{msg.menu1_item13}"
+						action="#{mapBean.servicioClearAction}"
+						update="pnlServiciosOGC panelGServices" immediate="true"
+						onclick="clearOGCServices();" process="@this" />
+					<p:commandButton value="#{msg.menu3_item1}"
+						process="@this,pnlServiciosOGC" action="#{mapBean.servicioAction}"
+						widgetVar="btnServiciosOGC" onclick="this.disabled = true;"
+						update="pnlServiciosOGC" />
+				</h:panelGrid>
+
+				<h:panelGrid width="100%"
+					rendered="#{fileUploadView.cargarExportar eq 'EXPORTAR'}">
+
+					<p:growl id="messagesCargarExportar" showDetail="true" />
+
+					<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+						<p:selectOneRadio id="radioBtn4" value="#{mapBean.exportarValor}"
+							unselectable="true" styleClass="radioBtn2">
+							<p:ajax update="westForm:pnlCargarExportar" />
+							<f:selectItem itemLabel="#{msg.opcion8_item2}" itemValue="MAPA" />
+							<f:selectItem itemLabel="#{msg.opcion8_item3}" itemValue="DATOS" />
+						</p:selectOneRadio>
+					</h:panelGrid>
+
+
+					<h:panelGrid id="pnlExportarMapa" columns="1"
+						rendered="#{mapBean.exportarValor eq 'MAPA'}"
+						style="margin-bottom:10px; width:100%;" cellpadding="5">
+						<h:outputLabel value="#{msg.opcion8_item13}" />
+						<h:inputText style="width:100%" value="#{mapBean.imprimirNombre}" />
+						<h:outputLabel value="#{msg.opcion8_item19}" />
+						<p:selectOneMenu value="#{mapBean.imprimirFormato}">
+							<f:selectItem itemLabel="PDF" itemValue="PDF" />
+							<f:selectItem itemLabel="JPG" itemValue="JPG" />
+							<f:selectItem itemLabel="PNG" itemValue="PNG32" />
+						</p:selectOneMenu>
+						<h:outputLabel value="#{msg.opcion8_item14}" />
+						<p:selectOneMenu value="#{mapBean.imprimirDiseno}">
+							<f:selectItem itemLabel="A3 Landscape" itemValue="A3 Landscape" />
+							<f:selectItem itemLabel="A3 Portrait" itemValue="A3 Portrait" />
+							<f:selectItem itemLabel="A4 Landscape" itemValue="A4 Landscape" />
+							<f:selectItem itemLabel="A4 Portrait" itemValue="A4 Portrait" />
+							<f:selectItem itemLabel="Letter ANSI A Landscape"
+								itemValue="Letter ANSI A Landscape" />
+							<f:selectItem itemLabel="Letter ANSI A Portrait"
+								itemValue="Letter ANSI A Portrait" />
+							<f:selectItem itemLabel="Tabloid ANSI B Landscape"
+								itemValue="Tabloid ANSI B Landscape" />
+							<f:selectItem itemLabel="Tabloid ANSI B Portrait"
+								itemValue="Tabloid ANSI B Portrait" />
+							<f:selectItem itemLabel="MAP_ONLY" itemValue="MAP_ONLY" />
+						</p:selectOneMenu>
+					</h:panelGrid>
+
+					<h:panelGrid id="pnlExportarMapa2" columns="2"
+						rendered="#{mapBean.exportarValor eq 'MAPA'}"
+						style="margin-bottom:10px" cellpadding="5">
+						<p:commandButton value="#{msg.opcion8_item15}"
+							onclick="PF('dlgSettingsPrint').show();" process="@this" />
+						<p:commandButton value="#{msg.opcion8_item16}"
+							process="@this,pnlExportarMapa" action="#{mapBean.printAction}"
+							widgetVar="btnExportar" onclick="this.disabled = true;"
+							update="pnlExportarMapa3" />
+					</h:panelGrid>
+
+					<div id="printResultsNode"></div>
+
+					<h:panelGrid id="pnlExportarMapa3"
+						rendered="#{mapBean.exportarValor eq 'MAPA'}"
+						style="text-align:center; margin-top: 20px;">
+						<p:commandButton value="#{msg.opcion8_item8}"
+							process="@this,pnlExportarMapa" widgetVar="btnLimpiarImprimir"
+							onclick="clearPrint();" update="pnlExportarMapa" />
+					</h:panelGrid>
+
+					<h:panelGrid id="pnlExportarDatos" columns="1"
+						rendered="#{mapBean.exportarValor eq 'DATOS'}"
+						style="margin-bottom:10px; width:100%;" cellpadding="5">
+
+						<h:outputLabel value="#{msg.opcion8_item17}" />
+						<p:selectOneMenu value="#{mapBean.exportarCapa}"
+							style="width:125px;">
+							<f:selectItem itemLabel="#{msg.opcion8_item18}"
+								itemValue="PREDIOS" />
+						</p:selectOneMenu>
+
+						<h:outputLabel value="#{msg.opcion8_item19}" />
+						<p:selectOneMenu value="#{mapBean.exportarFormato}"
+							style="width:125px;">
+							<f:selectItem itemLabel="Shapefile" itemValue="shapefile" />
+							<f:selectItem itemLabel="KML" itemValue="kml" />
+						</p:selectOneMenu>
+
+						<p:commandButton value="#{msg.opcion8_item10}"
+							process="@this,pnlExportarDatos" widgetVar="btnExportarDatos"
+							action="#{mapBean.exportAction}" update="messagesCargarExportar"
+							onclick="this.disabled = true;" />
+
+
+						<div id="divExportLink"
+							style="margin-top: 15px; text-align: center; width: 100%;">&nbsp;</div>
+
+					</h:panelGrid>
+
+				</h:panelGrid>
+
+			</h:panelGrid>
+		</p:panel>
+
+		<div id="opacityModal" class="modal">
+			<!-- Modal content -->
+			<div class="modal-content">
+				<span class="close">&times;</span>
+				<div id="slider"></div>
+			</div>
+
+		</div>
+
+		<h:commandButton style="display: none;" styleClass="capas">
+			<p:ajax update="capas" resetValues="true" />
+		</h:commandButton>
+		<h:commandButton style="display: none;" styleClass="submenu1">
+			<p:ajax update="tieredMenu1" resetValues="true" />
+		</h:commandButton>
+		<!-- 
+		<h:commandButton style="display: none;" styleClass="submenu2">
+			<p:ajax update="tieredMenu2" resetValues="true" />
+		</h:commandButton>
+		 -->
+		<h:commandButton style="display: none;" styleClass="layer1">
+			<p:ajax update="panelGServices" resetValues="true" />
+		</h:commandButton>
+		<!-- 
+		<h:commandButton style="display: none;" styleClass="layer2">
+			<p:ajax update="panelGServices2" resetValues="true" />
+		</h:commandButton>
+		 -->
+		<h:commandButton style="display: none;" styleClass="menuItemMD1">
+			<p:ajax update=":mapForm:mymap" listener="#{mapBean.positionDown(1)}" />
+		</h:commandButton>
+		<h:commandButton style="display: none;" styleClass="menuItemMU1">
+			<p:ajax update=":mapForm:mymap" listener="#{mapBean.positionUp(1)}" />
+		</h:commandButton>
+		<h:commandButton style="display: none;" styleClass="menuItemMU2">
+			<p:ajax update=":mapForm:mymap" listener="#{mapBean.positionUp(2)}" />
+		</h:commandButton>
+		<h:commandButton style="display: none;" styleClass="menuItemMD2">
+			<p:ajax update=":mapForm:mymap" listener="#{mapBean.positionDown(2)}" />
+		</h:commandButton>
+		<h:commandButton style="display: none;" styleClass="menuItemMV1">
+			<p:ajax update=":mapForm:mymap" listener="#{mapBean.layersturn1()}" />
+		</h:commandButton>
+		<h:commandButton style="display: none;" styleClass="menuItemMV2">
+			<p:ajax update=":mapForm:mymap" listener="#{mapBean.layersturn2()}" />
+		</h:commandButton>
+		<h:commandButton style="display: none;" styleClass="upload">
+			<f:ajax execute="idSelection6" />
+		</h:commandButton>
+		<h:commandButton style="display: none;" styleClass="verify">
+			<p:ajax listener="#{gisProperties.paginaError()}" />
+		</h:commandButton>
+		<h:commandButton style="display: none;" styleClass="cargarError">
+			<p:ajax listener="#{gisProperties.paginaError()}" />
+		</h:commandButton>
+
+		<h:inputHidden id="urlGisServiceU" value="#{mapBean.urlGisServiceU}" />
+		<h:inputHidden id="urlGisServiceR" value="#{mapBean.urlGisServiceR}" />
+		<h:inputHidden id="codeListString" value="#{mapBean.codeListString}" />
+		<h:inputHidden id="capasLocalesString"
+			value="#{mapBean.capasLocalesString}" />
+		<h:inputHidden id="capasOGCString" value="#{mapBean.capasOGCString}" />
+		<p:remoteCommand name="populateCodes"
+			action="#{mapBean.populateCodes}" update="table :centerForm:tbl2" />
+		<p:remoteCommand name="populateCode" action="#{mapBean.populateCode}" />
+		<p:remoteCommand name="populateLayers"
+			action="#{mapBean.populateLayers}" update="westForm:cmbCapasLocales" />
+		<p:remoteCommand name="populateOGCLayers"
+			action="#{mapBean.populateOGCLayers}" update="westForm:cmbCapasOGC" />
+	</h:form>
+	<script type="text/javascript"
+		src="#{resource['javascript:gisportal.js']}"></script>
+</h:body>
+
+</html>

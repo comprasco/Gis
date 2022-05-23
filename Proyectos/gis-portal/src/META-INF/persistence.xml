@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1"
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="tierrasDS"
+		transaction-type="JTA">
+		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+		<jta-data-source>jdbc/tierrasDS</jta-data-source>
+		<class>co.gov.supernotariado.bachue.portalgeografico.model.Vereda</class>
+		<class>co.gov.supernotariado.bachue.portalgeografico.model.Pais</class>
+		<class>co.gov.supernotariado.bachue.portalgeografico.model.Departamento</class>
+		<class>co.gov.supernotariado.bachue.portalgeografico.model.Municipio</class>
+		<class>co.gov.supernotariado.bachue.portalgeografico.model.ListaValores</class>
+		<class>co.gov.supernotariado.bachue.portalgeografico.model.AdmonRegistros</class>
+		<class>co.gov.supernotariado.bachue.portalgeografico.model.BusquedaBus</class>
+		<class>co.gov.supernotariado.bachue.portalgeografico.model.Municipios</class>
+		<class>co.gov.supernotariado.bachue.portalgeografico.model.ConstantesBachue</class>
+		<exclude-unlisted-classes>false</exclude-unlisted-classes>
+		<shared-cache-mode>NONE</shared-cache-mode>
+		<properties>
+			<property name="eclipselink.ddl-generation" value="create-or-extend-tables" />
+			<property name="javax.persistence.schema-generation.database.action" value="create" />
+			<property name="javax.persistence.schema-generation.scripts.action" value="create" />
+			<property name="javax.persistence.schema-generation.create-source" value="metadata-then-script" />
+			<property name="javax.persistence.schema-generation.drop-source" value="script-then-metadata" />
+			<property name="eclipselink.logging.logger" value="ServerLogger"/>
+			<property name="eclipselink.logging.parameters" value="true"/>
+			<property name="eclipselink.logging.level" value="FINER"/>
+			<property name="eclipselink.target-database" value="Oracle"/>
+	  		<property name="eclipselink.target-server" value="WebLogic"/>	  		
+	  		<property name="javax.persistence.jtaDataSource" value="jdbc/tierrasDS"/> 
+	  		<property name="eclipselink.cache.shared" value="false"/>
+		</properties>
+		
+	</persistence-unit>
+		<persistence-unit name="BachueDS"
+		transaction-type="JTA">
+		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+		<jta-data-source>jdbc/BachueDS</jta-data-source>
+		<class>co.gov.supernotariado.bachue.portalgeografico.model.GisParametro</class>
+		<class>co.gov.supernotariado.bachue.portalgeografico.model.ConstantesBachue</class>
+		<exclude-unlisted-classes>false</exclude-unlisted-classes>
+		<shared-cache-mode>NONE</shared-cache-mode>
+		<properties>
+			<property name="eclipselink.ddl-generation" value="create-or-extend-tables" />
+			<property name="javax.persistence.schema-generation.database.action" value="create" />
+			<property name="javax.persistence.schema-generation.scripts.action" value="create" />
+			<property name="javax.persistence.schema-generation.create-source" value="metadata-then-script" />
+			<property name="javax.persistence.schema-generation.drop-source" value="script-then-metadata" />
+			<property name="eclipselink.logging.logger" value="ServerLogger"/>
+			<property name="eclipselink.logging.parameters" value="true"/>
+			<property name="eclipselink.logging.level" value="FINER"/>
+			<property name="eclipselink.target-database" value="Oracle"/>
+	  		<property name="eclipselink.target-server" value="WebLogic"/>	  		
+	  		<property name="javax.persistence.jtaDataSource" value="jdbc/BachueDS"/> 
+	  		<property name="eclipselink.cache.shared" value="false"/>
+		</properties>
+		
+	</persistence-unit>
+</persistence>

@@ -1,0 +1,420 @@
+.gisportalMapPanel {
+	position: relative;
+	height: 100%;
+	overflow: hidden
+}
+
+.gisportalGeocoderPanel {
+	position: absolute;
+	z-index: 1;
+	top: 20px;
+	left: 60px
+}
+
+.gisportalLoadingPanel {
+	position: absolute;
+	z-index: 100;
+	top: 50%;
+	right: 50%;
+	padding: 5px 7px;
+	color: #6d6e71;
+	background: rgba(255, 255, 255, 1);
+	border: 1px solid #6d6e71;
+	border-radius: 5px;
+	opacity: .65;
+	font-size: 12pt
+}
+
+.gisportalCoordinatesPanel {
+	position: absolute;
+	z-index: 1;
+	right: 20px;
+	bottom: 20px;
+	padding: 5px;
+	font-family: verdana;
+	font-size: 8pt;
+	font-weight: bold;
+	color: #6d6e71;
+	background: rgba(255, 255, 255, 1);
+	border: 1px solid #6d6e71;
+	border-radius: 5px;
+	display: none;
+	opacity: .65
+}
+
+.gisportalPopupTable {
+	background-color: #fff;
+	width: 100%;
+	border: 1px solid lightgray;
+	border-collapse: collapse;
+	word-break: break-all
+}
+
+.gisportalPopupTable table, .gisportalPopupTable th,
+	.gisportalPopupTable td {
+	border: 1px solid lightgray;
+	border-collapse: collapse;
+	word-break: break-all
+}
+
+.gisportalPopupTable tr:hover {
+	background-color: lightgray
+}
+
+.gisportalLegendPanel {
+	word-break: break-all
+}
+
+.gisportalOverviewPanel {
+	height: 160px;
+	padding: 5px
+}
+
+.gisportalNavbarPanel {
+	position: absolute;
+	z-index: 1;
+	right: 20px;
+	top: 20px;
+	padding: 2px;
+	color: #6d6e71;
+	background: rgba(255, 255, 255, 1);
+	border: 1px solid #6d6e71;
+	border-radius: 5px;
+	opacity: .65;
+	font-size: 12pt
+}
+
+.gisportalNavbarPanel a {
+	padding: 5px;
+	color: #6d6e71;
+	text-decoration: none
+}
+
+.gisportalNavbarPanel a:hover {
+	padding: 5px;
+	color: black
+}
+
+.gisportalMeasurementPanel {
+	position: absolute;
+	z-index: 1;
+	right: 20px;
+	top: 60px;
+	color: #6d6e71;
+	background: rgba(255, 255, 255, 1);
+	border: 1px solid #6d6e71;
+	border-radius: 5px;
+	opacity: .65
+}
+
+.esriSimpleSlider {
+	opacity: .65
+}
+
+.arcgisSearch {
+	opacity: .65;
+	font-family: verdana;
+	font-size: 8pt
+}
+
+.arcgisSearch .searchBtn {
+	padding: 6px !important
+}
+
+.arcgisSearch .searchGroup .searchInput, .arcgisSearch .searchBtn,
+	.arcgisSearch .searchClear {
+	height: 18px !important
+}
+
+.esriPopup, .esriPopup.light {
+	font-family: verdana;
+	font-size: 8pt
+}
+
+.esriPopup a {
+	color: #6d6e71;
+	text-decoration: underline
+}
+
+.esriPopup.light .actionsPane {
+	padding: 10px !important
+}
+
+.esriPopupVisible.light .actionsPane .zoomTo:before {
+	content: "" !important
+}
+
+.esriPopup.light .actionsPane .zoomTo span {
+	display: block !important
+}
+
+.esriPopup.light .actionsPane .action {
+	width: auto !important;
+	color: #6d6e71;
+	text-decoration: underline !important;
+	font-family: verdana;
+	font-size: 8pt
+}
+
+.esriScalebarLabel {
+	color: #6d6e71;
+	font-family: verdana;
+	font-size: 8pt
+}
+
+.esriLegendService {
+	color: #6d6e71;
+	font-family: verdana;
+	font-size: 12px
+}
+
+.esriMeasurement {
+	color: #6d6e71;
+	font-family: verdana;
+	font-size: 8pt
+}
+
+.esriMeasurement .esriToggleButton .dijitButtonNode {
+	color: #6d6e71 !important;
+	font-weight: bold !important;
+	font-size: 8pt !important;
+	width: 100px !important
+}
+
+.dijitReset .dijitMenuItemSelected, .dijitReset .dijitMenuItemHover {
+	background-color: #6d6e71
+}
+
+.dijitMenuTable {
+	border: 1px solid #6d6e71 !important;
+	border-radius: 5px !important;
+	opacity: .65
+}
+
+.gisportalBasemapsPanel {
+	position: absolute;
+	z-index: 1;
+	right: 20px;
+	top: 60px;
+	color: #6d6e71;
+	background: rgba(255, 255, 255, 1);
+	border: 1px solid #6d6e71;
+	border-radius: 5px;
+	opacity: .65
+}
+
+.esriBasemapGallery {
+	width: 250px;
+}
+
+.ui-widget-header {
+	background: #74160E !important;
+	color: #fff !important;
+	padding: 15px !important;
+}
+
+.ui-panel .ui-panel-titlebar {
+	padding: 7px !important;
+}
+
+.drawButton {
+	padding-bottom: 1px;
+	padding-left: 16px;
+	padding-top: 16px;
+	padding-right: 16px;
+}
+
+.drawPoint {
+	background-image: url("#{resource['images:punto.png']}");
+}
+
+.drawCirle {
+	background-image: url("#{resource['images:circulo.png']}");
+}
+
+.drawLine {
+	background-image: url("#{resource['images:linea.png']}");
+}
+
+.drawFreehand {
+	background-image: url("#{resource['images:linea_alzada.png']}");
+}
+
+.drawPolygon {
+	background-image: url("#{resource['images:poligono.png']}");
+}
+
+.drawPolygonFreehand {
+	background-image: url("#{resource['images:poligono_alzada.png']}");
+}
+
+.drawText {
+	background-image: url("#{resource['images:texto.png']}");
+}
+
+.drawClear {
+	background-image: url("#{resource['images:borrar.png']}");
+}
+
+.drawPoint {
+	background-image: url("#{resource['images:punto.png']}");
+}
+
+.exportExcel {
+	background-image: url("#{resource['images:excel_logo.png']}");
+}
+
+.exportPdf {
+	background-image: url("#{resource['images:pdf_logo.png']}");
+}
+
+.export {
+	width: 27px;
+}
+
+.ui-menu .ui-menu-parent .ui-menu-child {
+	left: -145px !important;
+}
+
+.ui-icon-triangle-1-e {
+	display: none;
+}
+
+.ui-menu .ui-menuitem-link .ui-menuitem-icon, .ui-menu .ui-submenu-icon
+	{
+	display: none;
+}
+
+.menuLayer {
+	width: 14px;
+	height: 14px;
+	background-image: url("#{resource['images:menu_capas.png']}");
+}
+
+.logoSNR {
+	width: 283px;
+	height: 127px;
+	padding-left: 25px;
+	padding-top: 10px;
+}
+
+.logoMJust {
+	width: 500px;
+	height: 100px;
+	float: right;
+	padding-right: 25px;
+}
+
+.gisportalMapAttribute {
+	position: absolute;
+	z-index: 1;
+}
+
+body .ui-dialog .ui-dialog-content .ui-datatable table {
+	width: auto;
+}
+
+.scroll {
+	overflow: auto;
+	height: 150px;
+}
+
+.errorStop {
+	width: 400px;
+	margin: 10px auto;
+	display: block;
+}
+
+.errorFondo {
+	background-color: #EE512F;
+}
+
+.errorTexto {
+	font-weight: bold;
+	color: black;
+}
+
+.loader-page {
+    position: fixed;
+    z-index: 25000;
+    background: rgb(52, 58, 64);
+    left: 0px;
+    top: 0px;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition:all .3s ease;
+  }
+  .loader-page::before {
+    content: "";
+    position: absolute;
+    border: 2px solid rgb(50, 150, 176);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    border-left: 2px solid rgba(50, 150, 176,0);
+    border-top: 2px solid rgba(50, 150, 176,0);
+    animation: rotarload 1s linear infinite;
+    transform: rotate(0deg);
+  }
+  @keyframes rotarload {
+      0%   {transform: rotate(0deg)}
+      100% {transform: rotate(360deg)}
+  }
+  .loader-page::after {
+    content: "";
+    position: absolute;
+    border: 2px solid rgba(50, 150, 176,.5);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    border-left: 2px solid rgba(50, 150, 176, 0);
+    border-top: 2px solid rgba(50, 150, 176, 0);
+    animation: rotarload 1s ease-out infinite;
+    transform: rotate(0deg);
+  }
+#layerList {
+   width: 100%;
+}
+.dojoDndItemOver {
+   background: #ccc;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  width: 260px;
+  height: 50px;
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0);
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}

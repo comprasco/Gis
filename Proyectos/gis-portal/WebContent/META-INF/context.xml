@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+
+<Context>
+  <Resource 
+    name="jdbc/tierrasDS" 
+    auth="Container" 
+    type="javax.sql.DataSource"
+    driverClassName="oracle.jdbc.OracleDriver"
+    url="jdbc:oracle:thin:@192.168.36.15:1521:arcgis"
+    username="gdb_snr" 
+    password="gdb_snr" 
+    maxActive="100" 
+    maxIdle="30" 
+    maxWait="10000"/>
+</Context>

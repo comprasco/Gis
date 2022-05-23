@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head></h:head>
+
+<h:body>
+	<div class="loader-page"></div>
+	<h:form>
+		<f:loadBundle basename="#{gisProperties.idioma}" var="msg" />
+		<h:panelGrid columns="4" width="100%">
+			<p:graphicImage name="/images/LOGO SNR SF-012.png"
+				styleClass="logoSNR"></p:graphicImage>
+			<h:panelGrid columns="4">
+				<h:outputLink value="javascript:void(0)" onclick="desplegarModal();"
+					title="#{msg.menu5_tooltip1}">
+					<p:graphicImage name="/images/administracion.png"
+						styleClass="logoP" />
+				</h:outputLink>
+				<h:outputLink value="javascript:void(0)" onclick="desplegarModal();"
+					title="Ayuda en Linea">
+					<p:graphicImage name="/images/ayuda_linea.png" styleClass="logoP" />
+				</h:outputLink>
+				<h:commandLink id="idiomaGis" title="Cambiar Idioma">
+					<p:ajax listener="#{gisProperties.idioma()}" />
+					<p:graphicImage name="/images/idioma.png" styleClass="logoP" />
+				</h:commandLink>
+				<h:commandLink id="cerrarGis" title="Cerrar Sesion">
+					<p:ajax listener="#{gisProperties.cerrarSesion()}" />
+					<p:graphicImage name="/images/cerrar_sesion.png" styleClass="logoP" />
+				</h:commandLink>
+
+				<p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+
+			</h:panelGrid>
+			<p:outputLabel value="Bienvenido #{mapBean.name}" />
+			<p:graphicImage name="/images/Logo Minjusticia PNG.png"
+				styleClass="logoMJust"></p:graphicImage>
+		</h:panelGrid>
+	</h:form>
+	<script type="text/javascript"
+		src="#{resource['javascript:gisportal.js']}"></script>
+</h:body>
+
+</html>

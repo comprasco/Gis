@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title><ui:insert name="title">ERROR - GISPortal</ui:insert></title>
+	<h:outputStylesheet library="css" name="gisportal.css"></h:outputStylesheet>
+</h:head>
+
+<h:body>
+	<h:form id="errorPage">
+		<p:layout fullPage="true">
+			<p:layoutUnit position="north">
+				<h:panelGrid columns="3" width="100%">
+					<p:graphicImage name="/images/LOGO SNR SF-012.png"
+						styleClass="logoSNR"></p:graphicImage>
+					<p:graphicImage name="/images/Logo Minjusticia PNG.png"
+						styleClass="logoMJust"></p:graphicImage>
+				</h:panelGrid>
+			</p:layoutUnit>
+			<p:layoutUnit position="center">
+				<p:graphicImage name="/images/error_stop.png" styleClass="errorStop"></p:graphicImage>
+				<h:panelGroup layout="block" style="text-align:center;">
+					<p:outputLabel value="ERROR NO TIENE ACCESO AL PORTAL GEOGRAFICO"
+						styleClass="errorTexto" />
+				</h:panelGroup>
+			</p:layoutUnit>
+		</p:layout>
+	</h:form>
+		<script type="text/javascript">
+		window.onload = function () {
+			document.cookie.split(";").forEach(function(c) {
+		          document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+		        });
+			  window.location.hash = 'no-back-button';
+			  window.location.hash = 'Again-No-back-button'; // chrome
+			  window.onhashchange = function () {
+			    window.location.hash = 'no-back-button';
+			  };
+
+			   setTimeout(function(){
+				   window.location="http://vmwtstagw1.snr.local/salirsm";
+					 }, 3000); 
+		 }
+		</script>
+</h:body>
+
+</html>

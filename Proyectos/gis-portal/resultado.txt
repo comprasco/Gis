@@ -1,0 +1,106 @@
+C:\Users\Javier\Documents\sonarqube-7.7\sonar-runner-2.4\bin\..
+SonarQube Runner 2.4
+Java 1.8.0_211 Oracle Corporation (64-bit)
+Windows 10 10.0 amd64
+INFO: Runner configuration file: C:\Users\Javier\Documents\sonarqube-7.7\sonar-runner-2.4\bin\..\conf\sonar-runner.properties
+INFO: Project configuration file: C:\Users\Javier\eclipse-workspace\Gisportal\sonar-project.properties
+INFO: Default locale: "es_CO", source code encoding: "windows-1252" (analysis is platform dependent)
+INFO: Work directory: C:\Users\Javier\eclipse-workspace\Gisportal\.\.sonar
+INFO: SonarQube Server 7.7.0.23042
+08:21:21.164 INFO  - Load global settings
+08:21:21.414 INFO  - Load global settings (done) | time=252ms
+08:21:21.417 INFO  - Server id: BF41A1F2-AW7IcoZpSA28uMbLVSTW
+08:21:21.446 INFO  - User cache: C:\Users\Javier\.sonar\cache
+08:21:21.454 INFO  - Load/download plugins
+08:21:21.454 INFO  - Load plugins index
+08:21:21.527 INFO  - Load plugins index (done) | time=73ms
+08:21:21.619 INFO  - Load/download plugins (done) | time=165ms
+08:21:22.431 INFO  - Process project properties
+08:21:22.441 INFO  - Execute project builders
+08:21:22.445 INFO  - Execute project builders (done) | time=4ms
+08:21:22.451 INFO  - Project key: GISPORTAL-20190830
+08:21:22.451 INFO  - Base dir: C:\Users\Javier\eclipse-workspace\Gisportal
+08:21:22.452 INFO  - Working dir: C:\Users\Javier\eclipse-workspace\Gisportal\.sonar
+08:21:22.475 INFO  - Load project settings for component key: 'GISPORTAL-20190830'
+08:21:22.545 INFO  - Load project settings for component key: 'GISPORTAL-20190830' (done) | time=70ms
+08:21:22.591 INFO  - Load project repositories
+08:21:22.837 INFO  - Load project repositories (done) | time=246ms
+08:21:22.837 INFO  - Load quality profiles
+08:21:22.964 INFO  - Load quality profiles (done) | time=127ms
+08:21:23.001 INFO  - Load active rules
+08:21:26.038 INFO  - Load active rules (done) | time=3037ms
+08:21:26.182 INFO  - Indexing files...
+08:21:26.183 INFO  - Project configuration:
+08:21:26.650 INFO  - 145 files indexed
+08:21:26.652 INFO  - Quality profile for java: Sonar way
+08:21:26.652 INFO  - Quality profile for web: Sonar way
+08:21:26.652 INFO  - Quality profile for xml: Sonar way
+08:21:26.653 INFO  - ------------- Run sensors on module GISPORTAL-20190830
+08:21:26.882 INFO  - Load metrics repository
+08:21:26.944 INFO  - Load metrics repository (done) | time=63ms
+08:21:28.981 INFO  - Sensor JavaSquidSensor [java]
+08:21:29.468 INFO  - Configured Java source version (sonar.java.source): none
+08:21:29.486 INFO  - JavaClasspath initialization
+08:21:29.528 WARN  - Bytecode of dependencies was not provided for analysis of source files, you might end up with less precise results. Bytecode can be provided using sonar.java.libraries property.
+08:21:29.529 INFO  - JavaClasspath initialization (done) | time=43ms
+08:21:29.529 INFO  - JavaTestClasspath initialization
+08:21:29.529 INFO  - JavaTestClasspath initialization (done) | time=0ms
+08:21:29.953 INFO  - Java Main Files AST scan
+08:21:29.955 INFO  - 103 source files to be analyzed
+08:21:39.956 INFO  - 17/103 files analyzed, current file: C:\Users\Javier\eclipse-workspace\Gisportal\src\co\gov\supernotariado\bachue\portalgeografico\dao\impl\ConsultationDao.java
+08:21:49.958 INFO  - 92/103 files analyzed, current file: C:\Users\Javier\eclipse-workspace\Gisportal\src\co\gov\supernotariado\bachue\portalgeografico\ws\ClienteJSON.java
+08:21:50.509 WARN  - Invalid character encountered in file C:/Users/Javier/eclipse-workspace/Gisportal/src/co/gov/supernotariado/bachue/portalgeografico/ws/utils/CollectionUtils.java at line 78 for encoding UTF-8. Please fix file content or configure the encoding to be used using property 'sonar.sourceEncoding'.
+08:21:50.642 WARN  - Invalid character encountered in file C:/Users/Javier/eclipse-workspace/Gisportal/src/co/gov/supernotariado/bachue/portalgeografico/ws/utils/DateUtils.java at line 79 for encoding UTF-8. Please fix file content or configure the encoding to be used using property 'sonar.sourceEncoding'.
+08:21:50.882 WARN  - Invalid character encountered in file C:/Users/Javier/eclipse-workspace/Gisportal/src/co/gov/supernotariado/bachue/portalgeografico/ws/utils/EstadoCommon.java at line 27 for encoding UTF-8. Please fix file content or configure the encoding to be used using property 'sonar.sourceEncoding'.
+08:21:50.931 WARN  - Invalid character encountered in file C:/Users/Javier/eclipse-workspace/Gisportal/src/co/gov/supernotariado/bachue/portalgeografico/ws/utils/Limites.java at line 10 for encoding UTF-8. Please fix file content or configure the encoding to be used using property 'sonar.sourceEncoding'.
+08:21:51.375 WARN  - Invalid character encountered in file C:/Users/Javier/eclipse-workspace/Gisportal/src/co/gov/supernotariado/bachue/portalgeografico/ws/utils/StringUtils.java at line 21 for encoding UTF-8. Please fix file content or configure the encoding to be used using property 'sonar.sourceEncoding'.
+08:21:51.805 INFO  - 103/103 source files have been analyzed
+08:21:51.805 WARN  - Classes not found during the analysis : [javax.faces.application.FacesMessage, javax.faces.application.FacesMessage$Severity, javax.faces.component.UICommand, javax.faces.component.UIComponent, javax.faces.component.UIData, javax.faces.component.UIOutput, javax.faces.component.behavior.Behavior, javax.faces.context.FacesContext, javax.faces.event.ActionEvent, javax.faces.event.AjaxBehaviorEvent, javax.faces.event.FacesListener, javax.faces.model.SelectItem, javax.mail.Session, javax.persistence.EntityManager, javax.persistence.NamedQuery, javax.servlet.http.HttpServletRequest, org.codehaus.jettison.json.JSONArray, org.codehaus.jettison.json.JSONException, org.codehaus.jettison.json.JSONObject, org.primefaces.event.SelectEvent, org.primefaces.event.UnselectEvent, org.primefaces.model.TreeNode, org.slf4j.Logger]
+08:21:51.807 INFO  - Java Main Files AST scan (done) | time=21854ms
+08:21:51.807 INFO  - Java Test Files AST scan
+08:21:51.807 INFO  - 0 source files to be analyzed
+08:21:51.808 INFO  - Java Test Files AST scan (done) | time=1ms
+08:21:51.808 INFO  - Sensor JavaSquidSensor [java] (done) | time=22827ms
+08:21:51.808 INFO  - Sensor JaCoCo XML Report Importer [jacoco]
+08:21:51.810 INFO  - 0/0 source files have been analyzed
+08:21:51.815 INFO  - Sensor JaCoCo XML Report Importer [jacoco] (done) | time=7ms
+08:21:51.815 INFO  - Sensor SurefireSensor [java]
+08:21:51.816 INFO  - parsing [C:\Users\Javier\eclipse-workspace\Gisportal\target\surefire-reports]
+08:21:51.817 INFO  - Sensor SurefireSensor [java] (done) | time=2ms
+08:21:51.817 INFO  - Sensor JaCoCoSensor [java]
+08:21:51.821 INFO  - Sensor JaCoCoSensor [java] (done) | time=4ms
+08:21:51.821 INFO  - Sensor JavaXmlSensor [java]
+08:21:51.824 INFO  - 4 source files to be analyzed
+08:21:52.278 INFO  - Sensor JavaXmlSensor [java] (done) | time=457ms
+08:21:52.279 INFO  - 4/4 source files have been analyzed
+08:21:52.279 INFO  - Sensor HTML [web]
+08:21:52.840 INFO  - Sensor HTML [web] (done) | time=561ms
+08:21:52.840 INFO  - Sensor XML Sensor [xml]
+08:21:52.843 INFO  - 4 source files to be analyzed
+08:21:52.965 WARN  - Unable to analyse file file:///C:/Users/Javier/eclipse-workspace/Gisportal/src/META-INF/beans.xml;
+08:21:53.058 INFO  - Sensor XML Sensor [xml] (done) | time=218ms
+08:21:53.058 INFO  - 4/4 source files have been analyzed
+08:21:53.061 INFO  - ------------- Run sensors on project
+08:21:53.065 INFO  - Sensor Zero Coverage Sensor
+08:21:53.189 INFO  - Sensor Zero Coverage Sensor (done) | time=124ms
+08:21:53.189 INFO  - Sensor Java CPD Block Indexer
+08:21:53.492 INFO  - Sensor Java CPD Block Indexer (done) | time=303ms
+08:21:53.606 INFO  - SCM provider for this project is: svn
+08:21:53.607 INFO  - 5 files to be analyzed
+08:21:59.597 INFO  - 5/5 files analyzed
+08:21:59.640 INFO  - 19 files had no CPD blocks
+08:21:59.640 INFO  - Calculating CPD for 117 files
+08:21:59.783 INFO  - CPD calculation finished
+08:22:00.422 INFO  - Analysis report generated in 347ms, dir size=1 MB
+08:22:01.910 INFO  - Analysis report compressed in 1488ms, zip size=633 KB
+08:22:02.038 INFO  - Analysis report uploaded in 128ms
+08:22:02.040 INFO  - ANALYSIS SUCCESSFUL, you can browse http://localhost:9000/dashboard?id=GISPORTAL-20190830
+08:22:02.040 INFO  - Note that you will be able to access the updated dashboard once the server has processed the submitted analysis report
+08:22:02.040 INFO  - More about the report processing at http://localhost:9000/api/ce/task?id=AXRJ1OCE3Q-81kP8U5sw
+08:22:02.505 INFO  - Analysis total time: 40.750 s
+INFO: ------------------------------------------------------------------------
+INFO: EXECUTION SUCCESS
+INFO: ------------------------------------------------------------------------
+Total time: 44.306s
+Final Memory: 30M/853M
+INFO: ------------------------------------------------------------------------
